@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Kelas 8E MTS AL USWAH BERGAS</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primary: #3498db;
+            --primary-dark: #2980b9;
+            --secondary: #2ecc71;
+            --accent: #e74c3c;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --gray: #95a5a6;
+            --success: #27ae60;
+            --warning: #f39c12;
+            --danger: #e74c3c;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .login-container {
+            width: 100%;
+            max-width: 400px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            animation: slideUp 0.5s ease;
+        }
+        
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .login-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .logo-icon {
+            font-size: 2.5rem;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        
+        .logo-text h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+        
+        .highlight {
+            color: var(--secondary);
+        }
+        
+        .login-header p {
+            opacity: 0.9;
+            font-size: 0.9rem;
+        }
+        
+        .login-body {
+            padding: 30px;
+        }
+        
+        .login-tabs {
+            display: flex;
+            margin-bottom: 25px;
+            border-bottom: 2px solid var(--light);
+        }
+        
+        .tab-btn {
+            flex: 1;
+            padding: 12px;
+            background: none;
+            border: none;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--gray);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .tab-btn.active {
+            color: var(--primary);
+        }
+        
+        .tab-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--primary);
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--dark);
+        }
+        
+        .input-with-icon {
+            position: relative;
+        }
+        
+        .input-with-icon i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray);
+        }
+        
+        .input-with-icon input {
+            width: 100%;
+            padding: 12px 15px 12px 45px;
+            border: 2px solid var(--light);
+            border-radius: 8px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .input-with-icon input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+        }
+        
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        
+        .checkbox-group input {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--primary);
+        }
+        
+        .login-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(52, 152, 219, 0.3);
+        }
+        
+        .login-btn:active {
+            transform: translateY(0);
+        }
+        
+        .error-message {
+            background: rgba(231, 76, 60, 0.1);
+            color: var(--danger);
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 15px;
+            font-size: 0.9rem;
+            display: none;
+        }
+        
+        .error-message.show {
+            display: block;
+            animation: shake 0.5s ease;
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+        
+        .forgot-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+        .forgot-link a {
+            color: var(--primary);
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+        
+        .forgot-link a:hover {
+            text-decoration: underline;
+        }
+        
+        .login-footer {
+            text-align: center;
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid var(--light);
+            color: var(--gray);
+            font-size: 0.85rem;
+        }
+        
+        .login-footer a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+        
+        /* Popup styles */
+        .popup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        
+        .popup-content {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+        }
+        
+        .popup-icon {
+            font-size: 3rem;
+            color: var(--success);
+            margin-bottom: 15px;
+        }
+        
+        .popup h3 {
+            margin-bottom: 10px;
+            color: var(--dark);
+        }
+        
+        .popup p {
+            color: var(--gray);
+            margin-bottom: 20px;
+        }
+        
+        .popup-btn {
+            padding: 10px 30px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-family: 'Poppins', sans-serif;
+            cursor: pointer;
+        }
+        
+        .reset-form {
+            display: none;
+        }
+        
+        .reset-form.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container" id="loginContainer">
+        <!-- Header -->
+        <div class="login-header">
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-school"></i>
+                </div>
+                <div class="logo-text">
+                    <h1>KELAS <span class="highlight">8E</span></h1>
+                    <p>MTS AL USWAH BERGAS • Sistem Manajemen Kelas</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Body -->
+        <div class="login-body">
+            <!-- Tabs -->
+            <div class="login-tabs">
+                <button class="tab-btn active" data-tab="single">Login Single</button>
+                <button class="tab-btn" data-tab="multi">Login Multi User</button>
+            </div>
+            
+            <!-- Single Password Login -->
+            <div class="tab-content active" id="singleTab">
+                <div class="form-group">
+                    <label for="singlePassword">Password Kelas</label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="singlePassword" placeholder="Masukkan password kelas" autocomplete="current-password">
+                    </div>
+                </div>
+                
+                <div class="checkbox-group">
+                    <input type="checkbox" id="showPasswordSingle">
+                    <label for="showPasswordSingle">Tampilkan Password</label>
+                </div>
+                
+                <button class="login-btn" id="loginSingle">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Masuk ke Sistem
+                </button>
+                
+                <div class="error-message" id="singleError">
+                    <i class="fas fa-exclamation-circle"></i>
+                    Password salah! Coba lagi.
+                </div>
+            </div>
+            
+            <!-- Multi User Login -->
+            <div class="tab-content" id="multiTab">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-user"></i>
+                        <input type="text" id="username" placeholder="Nama pengguna" autocomplete="username">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-key"></i>
+                        <input type="password" id="password" placeholder="Kata sandi" autocomplete="current-password">
+                    </div>
+                </div>
+                
+                <div class="checkbox-group">
+                    <input type="checkbox" id="showPasswordMulti">
+                    <label for="showPasswordMulti">Tampilkan Password</label>
+                </div>
+                
+                <button class="login-btn" id="loginMulti">
+                    <i class="fas fa-user-check"></i>
+                    Login Sebagai Anggota
+                </button>
+                
+                <div class="error-message" id="multiError">
+                    <i class="fas fa-exclamation-circle"></i>
+                    Username atau password salah!
+                </div>
+            </div>
+            
+            <!-- Forgot Password -->
+            <div class="forgot-link">
+                <a href="#" id="forgotPassword">Lupa Password?</a>
+            </div>
+            
+            <!-- Footer -->
+            <div class="login-footer">
+                <p>Sistem Kelas 8E v2.0 • <a href="#" id="adminAccess">Akses Admin</a></p>
+                <p>Default password: <code>8ejaya</code></p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Reset Password Popup -->
+    <div class="popup" id="resetPopup">
+        <div class="popup-content">
+            <div class="popup-icon">
+                <i class="fas fa-key"></i>
+            </div>
+            <h3>Reset Password</h3>
+            <p>Hubungi admin kelas untuk mereset password Anda.</p>
+            
+            <div class="reset-form" id="resetForm">
+                <div class="form-group">
+                    <label for="resetEmail">Email Terdaftar</label>
+                    <input type="email" id="resetEmail" class="input-with-icon" placeholder="email@domain.com" style="padding-left: 15px;">
+                </div>
+                <button class="login-btn" id="sendReset">
+                    <i class="fas fa-paper-plane"></i>
+                    Kirim Link Reset
+                </button>
+            </div>
+            
+            <button class="popup-btn" id="closePopup">Tutup</button>
+        </div>
+    </div>
+    
+    <!-- Success Popup -->
+    <div class="popup" id="successPopup">
+        <div class="popup-content">
+            <div class="popup-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <h3>Login Berhasil!</h3>
+            <p>Mengarahkan ke dashboard...</p>
+            <div class="loader-small" style="margin: 20px auto;"></div>
+        </div>
+    </div>
+
+    <script>
+        // ===== LOGIN SYSTEM SCRIPT =====
+        document.addEventListener('DOMContentLoaded', function() {
+            // Default credentials
+            const DEFAULT_PASSWORD = '8ejaya';
+            const DEFAULT_USERS = [
+                { username: 'admin', password: 'admin123', role: 'admin', name: 'Administrator' },
+                { username: 'ketua', password: 'ketua123', role: 'ketua', name: 'Ketua Kelas' },
+                { username: 'anggota', password: 'anggota123', role: 'anggota', name: 'Anggota Biasa' },
+                { username: 'guru', password: 'guru123', role: 'guru', name: 'Wali Kelas' }
+            ];
+            
+            // Tab switching
+            const tabBtns = document.querySelectorAll('.tab-btn');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            tabBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const tabId = this.getAttribute('data-tab');
+                    
+                    // Update active tab button
+                    tabBtns.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Update active tab content
+                    tabContents.forEach(content => {
+                        content.classList.remove('active');
+                        if (content.id === `${tabId}Tab`) {
+                            content.classList.add('active');
+                        }
+                    });
+                    
+                    // Clear errors
+                    hideErrors();
+                });
+            });
+            
+            // Show/hide password
+            document.getElementById('showPasswordSingle').addEventListener('change', function() {
+                const passwordField = document.getElementById('singlePassword');
+                passwordField.type = this.checked ? 'text' : 'password';
+            });
+            
+            document.getElementById('showPasswordMulti').addEventListener('change', function() {
+                const passwordField = document.getElementById('password');
+                passwordField.type = this.checked ? 'text' : 'password';
+            });
+            
+            // Single password login
+            document.getElementById('loginSingle').addEventListener('click', function() {
+                const password = document.getElementById('singlePassword').value.trim();
+                
+                if (!password) {
+                    showError('singleError', 'Password tidak boleh kosong!');
+                    return;
+                }
+                
+                if (password === DEFAULT_PASSWORD) {
+                    // Success - Store session
+                    localStorage.setItem('kelas8ELoggedIn', 'true');
+                    localStorage.setItem('kelas8EUser', JSON.stringify({
+                        username: 'single_user',
+                        role: 'member',
+                        name: 'Anggota Kelas',
+                        loginType: 'single'
+                    }));
+                    localStorage.setItem('kelas8ELoginTime', new Date().toISOString());
+                    
+                    showSuccessPopup();
+                } else {
+                    showError('singleError', 'Password salah! Coba: 8ejaya');
+                }
+            });
+            
+            // Multi user login
+            document.getElementById('loginMulti').addEventListener('click', function() {
+                const username = document.getElementById('username').value.trim();
+                const password = document.getElementById('password').value.trim();
+                
+                if (!username || !password) {
+                    showError('multiError', 'Username dan password harus diisi!');
+                    return;
+                }
+                
+                // Check credentials
+                const user = DEFAULT_USERS.find(u => 
+                    u.username === username && u.password === password
+                );
+                
+                if (user) {
+                    // Success - Store session
+                    localStorage.setItem('kelas8ELoggedIn', 'true');
+                    localStorage.setItem('kelas8EUser', JSON.stringify({
+                        username: user.username,
+                        role: user.role,
+                        name: user.name,
+                        loginType: 'multi'
+                    }));
+                    localStorage.setItem('kelas8ELoginTime', new Date().toISOString());
+                    
+                    showSuccessPopup();
+                } else {
+                    showError('multiError', 'Username atau password salah!');
+                }
+            });
+            
+            // Forgot password
+            document.getElementById('forgotPassword').addEventListener('click', function(e) {
+                e.preventDefault();
+                document.getElementById('resetPopup').style.display = 'flex';
+            });
+            
+            // Admin access
+            document.getElementById('adminAccess').addEventListener('click', function(e) {
+                e.preventDefault();
+                document.getElementById('username').value = 'admin';
+                document.getElementById('password').value = 'admin123';
+                document.querySelector('.tab-btn[data-tab="multi"]').click();
+            });
+            
+            // Close popup
+            document.getElementById('closePopup').addEventListener('click', function() {
+                document.getElementById('resetPopup').style.display = 'none';
+            });
+            
+            // Send reset email
+            document.getElementById('sendReset').addEventListener('click', function() {
+                const email = document.getElementById('resetEmail').value.trim();
+                
+                if (!email || !isValidEmail(email)) {
+                    alert('Email tidak valid!');
+                    return;
+                }
+                
+                alert(`Link reset telah dikirim ke ${email}\n\n(Catatan: Ini hanya simulasi)`);
+                document.getElementById('resetPopup').style.display = 'none';
+            });
+            
+            // Enter key login
+            document.getElementById('singlePassword').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    document.getElementById('loginSingle').click();
+                }
+            });
+            
+            document.getElementById('password').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    document.getElementById('loginMulti').click();
+                }
+            });
+            
+            Auto-focus
+            document.getElementById('singlePassword').focus();
+            
+            // Check if already logged in
+            if (localStorage.getItem('kelas8ELoggedIn') === 'true') {
+                redirectToDashboard();
+            }
+            
+            // Utility functions
+            function showError(elementId, message) {
+                const errorElement = document.getElementById(elementId);
+                errorElement.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${message}`;
+                errorElement.classList.add('show');
+                
+                // Auto hide after 5 seconds
+                setTimeout(() => {
+                    errorElement.classList.remove('show');
+                }, 5000);
+            }
+            
+            function hideErrors() {
+                document.querySelectorAll('.error-message').forEach(el => {
+                    el.classList.remove('show');
+                });
+            }
+            
+            function showSuccessPopup() {
+                document.getElementById('successPopup').style.display = 'flex';
+                
+                // Redirect after 2 seconds
+                setTimeout(() => {
+                    redirectToDashboard();
+                }, 2000);
+            }
+            
+            function redirectToDashboard() {
+                // Change this to your actual dashboard URL
+                window.location.href = 'index.html';
+            }
+            
+            function isValidEmail(email) {
+                const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return re.test(email);
+            }
+            
+            // Easter egg: Konami code for admin
+            let konamiCode = [];
+            const konamiSequence = [
+                'ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown',
+                'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight',
+                'b', 'a'
+            ];
+            
+            document.addEventListener('keydown', function(e) {
+                konamiCode.push(e.key);
+                if (konamiCode.length > konamiSequence.length) {
+                    konamiCode.shift();
+                }
+                
+                if (konamiCode.join(',') === konamiSequence.join(',')) {
+                    document.getElementById('singlePassword').value = 'SUPERADMIN2024';
+                    alert('🎮 Mode Super Admin Aktif! 🎮');
+                    konamiCode = [];
+                }
+            });
+        });
+    </script>
+    
+    <style>
+        .loader-small {
+            width: 30px;
+            height: 30px;
+            border: 3px solid rgba(52, 152, 219, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--primary);
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</body>
+</html>
