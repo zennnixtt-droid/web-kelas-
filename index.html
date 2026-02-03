@@ -1,0 +1,412 @@
+html
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KELAS 8E - Mts Al USWAH bergas</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="https://img.icons8.com/color/96/000000/school.png">
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div class="loading" id="loading">
+        <div class="spinner"></div>
+        <p>Loading Sistem Kelas 8E...</p>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <div class="logo-icon">
+                        <i class="fas fa-school"></i>
+                    </div>
+                    <div class="logo-text">
+                        <h1>KELAS <span class="highlight">8E</span></h1>
+                        <p>8E • MTS-ALUSWAH BERGAS</p>
+                    </div>
+                </div>
+                
+                <div class="class-info">
+                    <div class="info-item">
+                        <i class="fas fa-users"></i>
+                        <span id="totalMembers">32</span> Anggota
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span id="currentDay">Senin</span>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-clock"></i>
+                        <span id="currentTime">00:00</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <ul class="nav-menu">
+                <li><a href="#" class="nav-link active" data-tab="dashboard"><i class="fas fa-home"></i> Dashboard</a></li>
+                <li><a href="#" class="nav-link" data-tab="schedule"><i class="fas fa-calendar"></i> Jadwal Pelajaran</a></li>
+                <li><a href="#" class="nav-link" data-tab="duty"><i class="fas fa-broom"></i> Jadwal Piket</a></li>
+                <li><a href="#" class="nav-link" data-tab="members"><i class="fas fa-users"></i> Anggota Kelas</a></li>
+                <li><a href="#" class="nav-link" data-tab="notes"><i class="fas fa-sticky-note"></i> Catatan</a></li>
+                <li><a href="#" class="nav-link" data-tab="settings"><i class="fas fa-cog"></i> Pengaturan</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <!-- Dashboard Tab -->
+            <div class="tab-content active" id="dashboard">
+                <div class="welcome-section">
+                    <h2><i class="fas fa-bell"></i> Selamat Datang di Portal Kelas 8E</h2>
+                    <p>Sistem manajemen kelas untuk 8E. Pantau jadwal, piket, dan informasi kelas di satu tempat.</p>
+                </div>
+
+                <div class="dashboard-grid">
+                    <!-- Today's Schedule -->
+                    <div class="card card-large">
+                        <div class="card-header">
+                            <h3><i class="fas fa-calendar-day"></i> Jadwal Hari Ini</h3>
+                            <button class="btn-small" id="refreshToday">Refresh</button>
+                        </div>
+                        <div class="card-body">
+                            <div class="today-schedule" id="todaySchedule">
+                                <div class="schedule-loading">
+                                    <div class="loader-small"></div>
+                                    <p>Memuat jadwal...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Today's Duty -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-broom"></i> Piket Hari Ini</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="duty-today" id="dutyToday">
+                                <div class="duty-loading">
+                                    <div class="loader-small"></div>
+                                    <p>Memuat piket...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Stats -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-chart-bar"></i> Statistik Kelas</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="stats">
+                                <div class="stat-item">
+                                    <div class="stat-icon" style="background: #4CAF50;">
+                                        <i class="fas fa-user-check"></i>
+                                    </div>
+                                    <div class="stat-info">
+                                        <h4>32</h4>
+                                        <p>Total Anggota</p>
+                                    </div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-icon" style="background: #2196F3;">
+                                        <i class="fas fa-chalkboard-teacher"></i>
+                                    </div>
+                                    <div class="stat-info">
+                                        <h4>12</h4>
+                                        <p>Mata Pelajaran</p>
+                                    </div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-icon" style="background: #FF9800;">
+                                        <i class="fas fa-broom"></i>
+                                    </div>
+                                    <div class="stat-info">
+                                        <h4>6</h4>
+                                        <p>Regu Piket</p>
+                                    </div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-icon" style="background: #9C27B0;">
+                                        <i class="fas fa-tasks"></i>
+                                    </div>
+                                    <div class="stat-info">
+                                        <h4>18</h4>
+                                        <p>Tugas Aktif</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Announcements -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-bullhorn"></i> Pengumuman</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="announcements">
+                                <div class="announcement-item new">
+                                    <div class="announcement-icon">
+                                        <i class="fas fa-exclamation-circle"></i>
+                                    </div>
+                                    <div class="announcement-content">
+                                        <h4>UTS Semester Genap</h4>
+                                        <p>UTS dilaksanakan tanggal 15-22 April. Jadwal lengkap lihat di pengumuman.</p>
+                                        <span class="announcement-date">Hari ini</span>
+                                    </div>
+                                </div>
+                                <div class="announcement-item">
+                                    <div class="announcement-icon">
+                                        <i class="fas fa-broom"></i>
+                                    </div>
+                                    <div class="announcement-content">
+                                        <h4>Piket Ekstra</h4>
+                                        <p>Regu 3 dan 4 tambahan piket hari Jumat untuk persiapan lomba kebersihan.</p>
+                                        <span class="announcement-date">2 hari lalu</span>
+                                    </div>
+                                </div>
+                                <div class="announcement-item">
+                                    <div class="announcement-icon">
+                                        <i class="fas fa-book"></i>
+                                    </div>
+                                    <div class="announcement-content">
+                                        <h4>Kumpulan Tugas</h4>
+                                        <p>Tugas Matematika dikumpulkan paling lambat besok pagi sebelum jam 7.</p>
+                                        <span class="announcement-date">3 hari lalu</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Schedule Tab -->
+            <div class="tab-content" id="schedule">
+                <div class="tab-header">
+                    <h2><i class="fas fa-calendar-alt"></i> Jadwal Pelajaran Mingguan</h2>
+                    <div class="tab-actions">
+                        <select id="scheduleDay" class="select-input">
+                            <option value="monday">Senin</option>
+                            <option value="tuesday">Selasa</option>
+                            <option value="wednesday">Rabu</option>
+                            <option value="thursday">Kamis</option>
+                            <option value="friday">Jumat</option>
+                            <option value="saturday">Sabtu</option>
+                        </select>
+                        <button class="btn-primary" id="printSchedule"><i class="fas fa-print"></i> Cetak</button>
+                        <button class="btn-secondary" id="editSchedule"><i class="fas fa-edit"></i> Edit</button>
+                    </div>
+                </div>
+                
+                <div class="schedule-container">
+                    <div class="schedule-table" id="scheduleTable">
+                        <!-- Jadwal akan dimuat via JavaScript -->
+                    </div>
+                    
+                    <div class="schedule-legend">
+                        <div class="legend-title">Keterangan:</div>
+                        <div class="legend-items">
+                            <div class="legend-item"><span class="legend-color" style="background: #FFEB3B;"></span> Mata Pelajaran</div>
+                            <div class="legend-item"><span class="legend-color" style="background: #4CAF50;"></span> Olahraga</div>
+                            <div class="legend-item"><span class="legend-color" style="background: #2196F3;"></span> Lab/Komputer</div>
+                            <div class="legend-item"><span class="legend-color" style="background: #9C27B0;"></span> Seni/Budaya</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Duty Tab -->
+            <div class="tab-content" id="duty">
+                <div class="tab-header">
+                    <h2><i class="fas fa-broom"></i> Jadwal Piket Kelas</h2>
+                    <div class="tab-actions">
+                        <select id="dutyWeek" class="select-input">
+                            <option value="week1">Minggu 1</option>
+                            <option value="week2">Minggu 2</option>
+                            <option value="week3">Minggu 3</option>
+                            <option value="week4">Minggu 4</option>
+                        </select>
+                        <button class="btn-primary" id="markDone"><i class="fas fa-check-circle"></i> Tandai Selesai</button>
+                    </div>
+                </div>
+                
+                <div class="duty-container">
+                    <div class="duty-grid" id="dutyGrid">
+                        <!-- Jadwal piket akan dimuat via JavaScript -->
+                    </div>
+                    
+                    <div class="duty-info">
+                        <h3><i class="fas fa-info-circle"></i> Instruksi Piket</h3>
+                        <ul>
+                            <li>Piket dilaksanakan setiap hari sebelum pulang sekolah </li>
+                            <li>anggota bertanggung jawab atas kebersihan area yang ditentukan</li>
+                            <li>Lapor ke ketua kelas jika ada anggota yang tidak hadir</li>
+                            <li>Periksa daftar perlengkapan kebersihan di lemari belakang</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Members Tab -->
+            <div class="tab-content" id="members">
+                <div class="tab-header">
+                    <h2><i class="fas fa-users"></i> Anggota Kelas 8 E</h2>
+                    <div class="tab-actions">
+                        <input type="text" id="searchMember" class="search-input" placeholder="Cari anggota...">
+                        <button class="btn-primary" id="addMember"><i class="fas fa-user-plus"></i> Tambah</button>
+                    </div>
+                </div>
+                
+                <div class="members-container">
+                    <div class="members-filter">
+                        <div class="filter-option active" data-filter="all">Semua</div>
+                        <div class="filter-option" data-filter="male">Laki-laki</div>
+                        <div class="filter-option" data-filter="female">Perempuan</div>
+                        <div class="filter-option" data-filter="committee">Pengurus</div>
+                    </div>
+                    
+                    <div class="members-grid" id="membersGrid">
+                        <!-- Anggota kelas akan dimuat via JavaScript -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Notes Tab -->
+            <div class="tab-content" id="notes">
+                <div class="tab-header">
+                    <h2><i class="fas fa-sticky-note"></i> Catatan Kelas</h2>
+                    <div class="tab-actions">
+                        <button class="btn-primary" id="addNote"><i class="fas fa-plus"></i> Catatan Baru</button>
+                    </div>
+                </div>
+                
+                <div class="notes-container">
+                    <div class="notes-editor">
+                        <div class="editor-header">
+                            <input type="text" id="noteTitle" class="editor-title" placeholder="Judul catatan...">
+                            <select id="noteCategory" class="select-input">
+                                <option value="general">Umum</option>
+                                <option value="homework">Tugas</option>
+                                <option value="reminder">Pengingat</option>
+                                <option value="meeting">Rapat</option>
+                                <option value="event">Acara</option>
+                            </select>
+                        </div>
+                        <textarea id="noteContent" class="editor-content" placeholder="Tulis catatan di sini..."></textarea>
+                        <div class="editor-actions">
+                            <button class="btn-secondary" id="clearNote">Bersihkan</button>
+                            <button class="btn-primary" id="saveNote">Simpan Catatan</button>
+                        </div>
+                    </div>
+                    
+                    <div class="notes-list" id="notesList">
+                        <!-- Daftar catatan akan dimuat via JavaScript -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settings Tab -->
+            <div class="tab-content" id="settings">
+                <div class="tab-header">
+                    <h2><i class="fas fa-cog"></i> Pengaturan Sistem</h2>
+                </div>
+                
+                <div class="settings-container">
+                    <div class="settings-card">
+                        <h3><i class="fas fa-palette"></i> Tema & Tampilan</h3>
+                        <div class="settings-option">
+                            <label>Tema Warna:</label>
+                            <select id="themeSelect" class="select-input">
+                                <option value="default">Default (Biru)</option>
+                                <option value="green">Hijau</option>
+                                <option value="purple">Ungu</option>
+                                <option value="dark">Mode Gelap</option>
+                            </select>
+                        </div>
+                        <div class="settings-option">
+                            <label>Notifikasi:</label>
+                            <div class="toggle-switch">
+                                <input type="checkbox" id="notifToggle" checked>
+                                <label for="notifToggle" class="toggle-label"></label>
+                            </div>
+                        </div>
+                        <button class="btn-primary" id="saveTheme">Simpan Tema</button>
+                    </div>
+                    
+                    <div class="settings-card">
+                        <h3><i class="fas fa-database"></i> Data Kelas</h3>
+                        <div class="settings-option">
+                            <p>Ekspor semua data kelas ke file JSON</p>
+                            <button class="btn-secondary" id="exportData"><i class="fas fa-download"></i> Ekspor Data</button>
+                        </div>
+                        <div class="settings-option">
+                            <p>Impor data dari file JSON</p>
+                            <input type="file" id="importFile" accept=".json" style="display: none;">
+                            <button class="btn-secondary" id="importBtn"><i class="fas fa-upload"></i> Impor Data</button>
+                        </div>
+                        <div class="settings-option">
+                            <p>Reset semua data ke default</p>
+                            <button class="btn-danger" id="resetData"><i class="fas fa-trash-alt"></i> Reset Data</button>
+                        </div>
+                    </div>
+                    
+                    <div class="settings-card">
+                        <h3><i class="fas fa-info-circle"></i> Tentang Sistem</h3>
+                        <div class="about-info">
+                            <p><strong>Kelas 8E</strong></p>
+                            <p>Sistem manajemen kelas</p>
+                            <p>Dikembangkan oleh: <strong>ZoroModz </strong></p>
+                            <p>© 2026 - All rights reserved</p>
+                            <div class="version">Version 2.0.1</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+        <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <i class="fas fa-school"></i>
+                    <span>KELAS 8 E</span>
+                </div>
+                <div class="footer-links">
+                    <a href="#"><i class="fab fa-whatsapp"></i> Grup WA</a>
+                    <a href="#"><i class="fab fa-instagram"></i> Instagram</a>
+                    <a href="#"><i class="fas fa-envelope"></i> Email</a>
+                </div>
+                <div class="footer-copyright">
+                    © Kelas 8 E • MTS AL USWAH BERGAS • Made with <i class="fas fa-heart" style="color:#e74c3c;"></i> by ZoroModz
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
+        <div class="toast-content">
+            <i class="fas fa-check-circle"></i>
+            <span id="toastMessage">Aksi berhasil!</span>
+        </div>
+    </div>
+
+</body>
+</html>
