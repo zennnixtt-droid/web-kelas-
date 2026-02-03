@@ -9,6 +9,30 @@ html
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <link rel="icon" href="https://img.icons8.com/color/96/000000/school.png">
+    <!-- Add this at the very beginning of body in index.html -->
+<div id="authCheck" style="display: none;">
+    <script>
+        // Check if user is logged in
+        if (localStorage.getItem('kelas8ELoggedIn') !== 'true') {
+            window.location.href = 'login.html';
+        }
+        
+        // Get user info
+        const userData = JSON.parse(localStorage.getItem('kelas8EUser') || '{}');
+        
+        // Auto logout after 24 hours
+        const loginTime = new Date(localStorage.getItem('kelas8ELoginTime'));
+        const now = new Date();
+        const hoursDiff = (now - loginTime) / (1000 * 60 * 60);
+        
+        if (hoursDiff > 24) {
+            localStorage.removeItem('kelas8ELoggedIn');
+            localStorage.removeItem('kelas8EUser');
+            localStorage.removeItem('kelas8ELoginTime');
+            window.location.href = 'login.html';
+        }
+    </script>
+</div>
 </head>
 <body>
     <!-- Loading Screen -->
@@ -285,6 +309,37 @@ html
                     </div>
                 </div>
             </div>
+            <!-- Replace the class-info div in header with this: -->
+<div class="class-info">
+    <div class="info-item user-info" id="userInfo">
+        <i class="fas fa-user-circle"></i>
+        <span id="userName">Loading...</span>
+        <div class="user-dropdown" id="userDropdown">
+            <div class="dropdown-header">
+                <strong id="dropdownName">User</strong>
+                <small id="dropdownRole">Role</small>
+            </div>
+            <div class="dropdown-item" onclick="showProfile()">
+                <i class="fas fa-user"></i> Profil Saya
+            </div>
+            <div class="dropdown-item" onclick="changePassword()">
+                <i class="fas fa-key"></i> Ganti Password
+            </div>
+            <div class="dropdown-divider"></div>
+            <div class="dropdown-item logout" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </div>
+        </div>
+    </div>
+    <div class="info-item">
+        <i class="fas fa-calendar-alt"></i>
+        <span id="currentDay">Senin</span>
+    </div>
+    <div class="info-item">
+        <i class="fas fa-clock"></i>
+        <span id="currentTime">00:00</span>
+    </div>
+</div>
 
             <!-- Notes Tab -->
             <div class="tab-content" id="notes">
@@ -380,7 +435,7 @@ html
         </div>
     </main>
 
-        <!-- Footer -->
+    <!-- Footer -->
     <footer class="footer">
         <div class="container">
             <div class="footer-content">
@@ -407,6 +462,201 @@ html
             <span id="toastMessage">Aksi berhasil!</span>
         </div>
     </div>
+    
+    /* ===== USER DROPDOWN ===== */
+.user-info {
+    position: relative;
+    cursor: pointer;
+    padding: 5px 10px;
+    border-radius: var(--radius);
+    transition: var(--transition);
+}
+
+.user-info:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.user-dropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: white;
+    min-width: 200px;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    z-index: 1000;
+    display: none;
+    margin-top: 10px;
+    overflow: hidden;
+}
+
+.user-info:hover .user-dropdown {
+    display: block;
+    animation: fadeIn 0.3s ease;
+}
+
+.dropdown-header {
+    padding: 15px;
+    background: var(--light);
+    border-bottom: 1px solid #ddd;
+}
+
+.dropdown-header strong {
+    display: block;
+    font-size: 1rem;
+}
+
+.dropdown-header small {
+    color: var(--gray);
+    font-size: 0.85rem;
+}
+
+.dropdown-item {
+    padding: 12px 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    transition: var(--transition);
+    color: var(--dark);
+    text-decoration: none;
+}
+
+.dropdown-item:hover {
+    background: var(--light);
+    color: var(--primary);
+}
+
+.dropdown-item i {
+    width: 20px;
+    text-align: center;
+}
+
+.dropdown-divider {
+    height: 1px;
+    background: var(--light);
+    margin: 5px 0;
+}
+
+.dropdown-item.logout {
+    color: var(--danger);
+}
+
+.dropdown-item.logout:hover {
+    background: rgba(231, 76, 60, 0.1);
+}
+
+/* ===== MODAL STYLES ===== */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1001;
+}
+
+.modal-content {
+    background: white;
+    border-radius: var(--radius);
+    width: 90%;
+    max-width: 500px;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.modal-header {
+    padding: 20px;
+    background: var(--primary);
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+}
+
+.modal-header h3 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: var(--transition);
+}
+
+.modal-close:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.modal-body {
+    padding: 25px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: var(--dark);
+}
+
+.form-control {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--gray-light);
+    border-radius: var(--radius);
+    font-family: 'Poppins', sans-serif;
+    transition: var(--transition);
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+}
+
+.btn-group {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    margin-top: 25px;
+}
+
+/* Role badges */
+.role-badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin-left: 10px;
+}
+
+.role-admin { background: #e74c3c; color: white; }
+.role-ketua { background: #3498db; color: white; }
+.role-guru { background: #9b59b6; color: white; }
+.role-anggota { background: #2ecc71; color: white; }
 
 </body>
 </html>
