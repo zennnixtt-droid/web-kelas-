@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Kelas 8E</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .admin-container {
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .admin-header {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            color: white;
+            padding: 25px;
+            border-radius: var(--radius);
+            margin-bottom: 30px;
+        }
+        
+        .admin-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+        
+        .admin-card {
+            background: white;
+            border-radius: var(--radius);
+            padding: 25px;
+            box-shadow: var(--shadow);
+        }
+        
+        .admin-card.danger {
+            border-top: 5px solid var(--danger);
+        }
+        
+        .admin-card.warning {
+            border-top: 5px solid var(--warning);
+        }
+        
+        .admin-card.success {
+            border-top: 5px solid var(--success);
+        }
+        
+        .user-list {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .user-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid var(--light);
+        }
+        
+        .log-entry {
+            padding: 10px;
+            border-bottom: 1px solid var(--light);
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+        }
+        
+        .log-time {
+            color: var(--gray);
+            font-size: 0.85rem;
+        }
+    </style>
+</head>
+<body>
+    <div id="authCheck">
+        <script>
+            // Check if user is admin
+            const userData = JSON.parse(localStorage.getItem('kelas8EUser') || '{}');
+            if (userData.role !== 'admin') {
+                alert('Akses ditolak! Halaman ini hanya untuk admin.');
+                window.location.href = 'index.html';
+            }
+        </script>
+    </div>
+    
+    <div class="admin-container">
+        <div class="admin-header">
+            <h1><i class="fas fa-shield-alt"></i> Admin Panel Kelas 8E</h1>
+            <p>Manajemen sistem dan pengguna</p>
+        </div>
+        
+        <div class="admin-grid">
+            <!-- User Management -->
+            <div class="admin-card">
+                <h3><i class="fas fa-users"></i> Manajemen Pengguna</h3>
+                <div class="user-list" id="userList">
+                    <!-- Users will be loaded here -->
+                </div>
+                <button class="btn-primary" onclick="addUser()" style="margin-top:15px;width:100%;">
+                    <i class="fas fa-user-plus"></i> Tambah Pengguna
+                </button>
+            </div>
+            
+            <!-- System Logs -->
+            <div class="admin-card">
+                <h3><i class="fas fa-clipboard-list"></i> Log Sistem</h3>
+                <div id="systemLogs">
+                    <!-- Logs will be loaded here -->
+                </div>
+                <button class="btn-secondary" onclick="clearLogs()" style="margin-top:15px;width:100%;">
+                    <i class="fas fa-trash"></i> Hapus Log
+                </button>
+            </div>
+            
+            <!-- Backup & Restore -->
+            <div class="admin-card success">
+                <h3><i class="fas fa-database"></i> Backup Data</h3>
+                <p>Backup semua data sistem</p>
+                <button class="btn-primary" onclick="backupData()" style="margin:10px 0;width:100%;">
+                    <i class="fas fa-download"></i> Buat Backup
+                </button>
+                
+                <p>Restore dari file backup</p>
+                <input type="file" id="restoreFile" accept=".json" style="display:none;">
+                <button class="btn-secondary" onclick="document.getElementById('restoreFile').click()" style="width:100%;">
+                    <i class="fas fa-upload"></i> Restore Data
+                </button>
+            </div>
+            
+            <!-- System Settings -->
+            <div class="admin-card warning">
+                <h3><i class="fas fa-cogs"></i> Pengaturan Sistem</h3>
+                
+                <div style="margin:15px 0;">
+                    <label>Auto Logout (jam)</label>
+                    <select id="autoLogout" class="select-input" style="width:100%;margin-top:5px;">
+                        <option value="1">1 Jam</option>
+                        <option value="12">12 Jam</option>
+                        <option value="24" selected>24 Jam</option>
+                        <option value="48">48 Jam</option>
+                        <option value="0">Tidak Ada</option>
+                    </select>
+                </div>
+                
+                <div style="margin:15px 0;">
+                    <label>Mode Pemeliharaan</label>
+                    <div class="toggle-switch">
+                        <input type="checkbox" id="maintenanceMode">
+                        <label for="maintenanceMode" class="toggle-label"></label>
+                    </div>
+                </div>
+                
+                <button class="btn-primary" onclick="saveSystemSettings()" style="width:100%;margin-top:15px;">
+                    <i class="fas fa-save"></i> Simpan Pengaturan
+                </button>
+            </div>
+            
+            <!-- Danger Zone -->
+            <div class="admin-card danger">
+                <h3><i class="fas fa-exclamation-triangle"></i> Zona Berbahaya</h3>
+                <p>Reset semua data sistem</p>
+                <button class="btn-danger" onclick="resetSystem()" style="width:100%;margin:10px 0;">
+                    <i class="fas fa-bomb"></i> Reset Sistem
+                </button>
+                
+                <p>Hapus semua pengguna</p>
+                <button class="btn-danger" onclick="deleteAllUsers()" style="width:100%;">
+                    <i class="fas fa-user-slash"></i> Hapus Semua Pengguna
+                </button>
+            </div>
+            
+            <!-- Statistics -->
+            <div class="admin-card">
+                <h3><i class="fas fa-chart-bar"></i> Statistik Sistem</h3>
+                <div id="systemStats">
+                    <!-- Stats will be loaded here -->
+                </div>
+                <button class="btn-secondary" onclick="refreshStats()" style="width:100%;margin-top:15px;">
+                    <i class="fas fa-sync-alt"></i> Refresh Statistik
+                </button>
+            </div>
+        </div>
+        
+        <div style="text-align:center;margin-top:30px;">
+            <button class="btn-primary" onclick="window.location.href='index.html'">
+                <i class="fas fa-arrow-left"></i> Kembali ke Dashboard
+            </button>
+            <button class="btn-secondary" onclick="logout()" style="margin-left:10px;">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        // Admin-specific functions
+        function loadUserList() {
+            // This would normally come from a database
+            const users = [
+                { id: 1, username: 'admin', name: 'Administrator', role: 'admin', lastLogin: '2024-04-10 14:30' },
+                { id: 2, username: 'ketua', name: 'Ketua Kelas', role: 'ketua', lastLogin: '2024-04-10 13:45' },
+                { id: 3, username: 'guru', name: 'Bu Ani', role: 'guru', lastLogin: '2024-04-09 10:15' }
+            ];
+            
+            let userHTML = '';
+            users.forEach(user => {
+                userHTML += `
+                    <div class="user-item">
+                        <div>
+                            <strong>${user.name}</strong>
+                            <div style="font-size:0.85rem;color:#666;">${user.username} • ${user.role}</div>
+                        </div>
+                        <div>
+                            <button class="btn-small" onclick="editUser(${user.id})">Edit</button>
+                            <button class="btn-small btn-danger" onclick="deleteUser(${user.id})">Hapus</button>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            document.getElementById('userList').innerHTML = userHTML;
+        }
+        
+        function loadSystemLogs() {
+            const logs = [
+                { time: '2024-04-10 14:30:22', action: 'User "admin" logged in', type: 'login' },
+                { time: '2024-04-10 13:45:10', action: 'User "ketua" updated schedule', type: 'update' },
+                { time: '2024-04-10 12:20:05', action: 'System backup created', type: 'backup' },
+                { time: '2024-04-10 11:15:33', action: 'New note added by "guru"', type: 'create' },
+                { time: '2024-04-10 10:30:18', action: 'User "anggota" logged out', type: 'logout' }
+            ];
+            
+            let logHTML = '';
+            logs.forEach(log => {
+                const typeColor = log.type === 'login' ? 'green' : 
+                                 log.type === 'logout' ? 'red' : 
+                                 log.type === 'create' ? 'blue' : 'orange';
+                
+                logHTML += `
+                    <div class="log-entry">
+                        <span style="color:${typeColor}">●</span>
+                        ${log.action}
+                        <div class="log-time">${log.time}</div>
+                    </div>
+                `;
+            });
+            
+            document.getElementById('systemLogs').innerHTML = logHTML;
+        }
+        
+        function loadSystemStats() {
+            const stats = {
+                totalUsers: 32,
+                activeSessions: 5,
+                totalNotes: 18,
+                scheduleUpdates: 3,
+                diskUsage: '2.4 MB',
+                lastBackup: '2024-04-10 12:20'
+            };
+            
+            const statsHTML = `
+                <div style="margin-top:15px;">
+                    <div style="display:flex;justify-content:space-between;margin:10px 0;">
+                        <span>Total Pengguna:</span>
+                        <strong>${stats.totalUsers}</strong>
+                    </div>
+                    <div style="display:flex;justify-content:space-between;margin:10px 0;">
+                        <span>Sesi Aktif:</span>
+                        <strong>${stats.activeSessions}</strong>
+                    </div>
+                    <div style="display:flex;justify-content:space-between;margin:10px 0;">
+                        <span>Total Catatan:</span>
+                        <strong>${stats.totalNotes}</strong>
+                    </div>
+                    <div style="display:flex;justify-content:space-between;margin:10px 0;">
+                        <span>Pemakaian Disk:</span>
+                        <strong>${stats.diskUsage}</strong>
+                    </div>
+                    <div style="display:flex;justify-content:space-between;margin:10px 0;">
+                        <span>Backup Terakhir:</span>
+                        <strong>${stats.lastBackup}</strong>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('systemStats').innerHTML = statsHTML;
+        }
+        
+        function addUser() {
+            alert('Fitur tambah pengguna akan datang!');
+        }
+        
+        function editUser(id) {
+            alert(`Edit user dengan ID: ${id}`);
+        }
+        
+        function deleteUser(id) {
+            if (confirm('Apakah Anda yakin ingin menghapus pengguna ini?')) {
+                alert(`User dengan ID ${id} telah dihapus (simulasi)`);
+            }
+        }
+        
+        function clearLogs() {
+            if (confirm('Hapus semua log sistem?')) {
+                document.getElementById('systemLogs').innerHTML = '<p style="color:#666;text-align:center;">Log telah dibersihkan</p>';
+            }
+        }
+        
+        function backupData() {
+            const data = {
+                backupTime: new Date().toISOString(),
+                users: classData.members,
+                schedule: classData.schedule,
+                notes: classData.notes
+            };
+            
+            const dataStr = JSON.stringify(data, null, 2);
+            const blob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `kelas-8E-backup-${new Date().toISOString().split('T')[0]}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            alert('Backup berhasil dibuat!');
+        }
+        
+        function resetSystem() {
+            if (confirm('⚠️ PERINGATAN: Reset sistem akan menghapus SEMUA data!\n\nApakah Anda yakin?')) {
+                localStorage.clear();
+                alert('Sistem telah direset. Halaman akan direfresh.');
+                location.reload();
+            }
+        }
+        
+        function deleteAllUsers() {
+            if (confirm('Hapus SEMUA pengguna?\nTindakan ini tidak dapat dibatalkan!')) {
+                alert('Semua pengguna telah dihapus (simulasi)');
+            }
+        }
+        
+        function saveSystemSettings() {
+            const autoLogout = document.getElementById('autoLogout').value;
+            const maintenance = document.getElementById('maintenanceMode').checked;
+            
+            localStorage.setItem('kelas8EAutoLogout', autoLogout);
+            localStorage.setItem('kelas8EMaintenance', maintenance);
+            
+            alert('Pengaturan sistem berhasil disimpan!');
+        }
+        
+        function refreshStats() {
+            loadSystemStats();
+        }
+        
+        // Load data on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadUserList();
+            loadSystemLogs();
+            loadSystemStats();
+            
+            // Load saved settings
+            const savedLogout = localStorage.getItem('kelas8EAutoLogout') || '24';
+            const savedMaintenance = localStorage.getItem('kelas8EMaintenance') === 'true';
+            
+            document.getElementById('autoLogout').value = savedLogout;
+            document.getElementById('maintenanceMode').checked = savedMaintenance;
+        });
+    </script>
+</body>
+</html>
